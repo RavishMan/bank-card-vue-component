@@ -22,7 +22,7 @@ describe("Card", () => {
             codeName: null,
             codeLength: null,
             numberMask: null,
-            numberGaps: [4, 8, 12],
+            numberGaps: [4, 8, 12, 16],
             numberBlocks: null,
             numberLengths: [12, 13, 14, 15, 16, 17, 18, 19],
             numberNice: null,
@@ -41,6 +41,9 @@ describe("Card", () => {
 
         for (const [key, value] of Object.entries(cardDefault)) {
             const method = typeof value === "object" ? "toEqual" : "toBe";
+
+            console.log('card[key], value')
+            console.log(card[key], value)
 
             expect(card[key])[method](value);
         }

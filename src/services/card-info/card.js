@@ -19,7 +19,7 @@ export default class Card {
         this.codeName = null;
         this.codeLength = null;
         this.numberMask = null;
-        this.numberGaps = [4, 8, 12];
+        this.numberGaps = [4, 8, 12, 16];
         this.numberBlocks = null;
         this.numberLengths = [12, 13, 14, 15, 16, 17, 18, 19];
         this.numberNice = null;

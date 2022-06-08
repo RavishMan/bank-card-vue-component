@@ -90,11 +90,193 @@ describe("Card-info", () => {
                     backgroundColors: ["#444", "#222"],
                     backgroundGradient: "linear-gradient(135deg, #444, #222)",
                     backgroundLightness: "dark",
-                    textColor: "#fff"
+                    textColor: "#fff",
                 };
 
                 testValues(colorInfo);
             });
         });
     });
+
+    describe.each([
+        {
+            number: "2200000000000000000",
+            formattedNumber: "2200 0000 0000 0000 000",
+            brand: "mir",
+        },
+        {
+            number: "2200000000000004",
+            formattedNumber: "2200 0000 0000 0004",
+            brand: "mir",
+        },
+        {
+            number: "2202000000003055",
+            formattedNumber: "2202 0000 0000 3055",
+            brand: "mir",
+        },
+        {
+            number: "2200000022222222",
+            formattedNumber: "2200 0000 2222 2222",
+            brand: "mir",
+        },
+    ])("Check MIR card with number: {$number}",
+        ({ number, formattedNumber, brand }) => {
+            const cardInfo = new CardInfo(number);
+
+            const testValues = (infoObject) => {
+                for (const [key, value] of Object.entries(infoObject)) {
+                    const method =
+                        typeof value === "object" ? "toEqual" : "toBe";
+
+                    expect(cardInfo[key])[method](value);
+                }
+            };
+
+            describe("base", () => {
+                it("bank", () => {
+                    const bankInfo = {
+                        bankAlias: null,
+                        bankCountry: null,
+                        bankLogo: null,
+                        bankLogoSm: null,
+                        bankLogoStyle: null,
+                        bankName: null,
+                        bankNameEn: null,
+                    };
+
+                    testValues(bankInfo);
+                });
+
+                it("brand", () => {
+                    const brandInfo = {
+                        brandAlias: brand ? brand.toLowerCase() : null,
+                        brandName: brand ? brand.toUpperCase() : null,
+                    };
+
+                    testValues(brandInfo);
+                });
+
+                it("code", () => {
+                    const codeInfo = {
+                        codeLength: 3,
+                        codeName: "CVC",
+                    };
+
+                    testValues(codeInfo);
+                });
+            });
+
+            describe("additional", () => {
+                it("number", () => {
+                    const numberInfo = {
+                        number,
+                        numberBlocks: [4, 4, 4, 4, 3],
+                        numberGaps: [4, 8, 12, 16],
+                        numberLengths: [16, 19],
+                        numberMask: "#### #### #### #### ###",
+                        numberNice: formattedNumber,
+                        numberSource: number,
+                    };
+
+                    testValues(numberInfo);
+                });
+
+                it("colors", () => {
+                    const colorInfo = {
+                        backgroundColor: "#eeeeee",
+                        backgroundColors: ["#eeeeee", "#dddddd"],
+                        backgroundGradient:
+                            "linear-gradient(135deg, #eeeeee, #dddddd)",
+                        backgroundLightness: "light",
+                        textColor: "#000",
+                    };
+
+                    testValues(colorInfo);
+                });
+            });
+        }
+    );
+
+    describe.each([ {
+            number: "2100000000000000000",
+            formattedNumber: "2100 0000 0000 0000 000",
+            brand: null,
+        } ])(
+        "Check card with number: $number",
+        ({ number, formattedNumber, brand }) => {
+            const cardInfo = new CardInfo(number);
+
+            const testValues = (infoObject) => {
+                for (const [key, value] of Object.entries(infoObject)) {
+                    const method =
+                        typeof value === "object" ? "toEqual" : "toBe";
+
+                    expect(cardInfo[key])[method](value);
+                }
+            };
+
+            describe("base", () => {
+                it("bank", () => {
+                    const bankInfo = {
+                        bankAlias: null,
+                        bankCountry: null,
+                        bankLogo: null,
+                        bankLogoSm: null,
+                        bankLogoStyle: null,
+                        bankName: null,
+                        bankNameEn: null,
+                    };
+
+                    testValues(bankInfo);
+                });
+
+                it("brand", () => {
+                    const brandInfo = {
+                        brandAlias: brand ? brand.toLowerCase() : null,
+                        brandName: brand ? brand.toUpperCase() : null,
+                    };
+
+                    testValues(brandInfo);
+                });
+
+                it("code", () => {
+                    const codeInfo = {
+                        codeLength: 3,
+                        codeName: "CVC",
+                    };
+
+                    testValues(codeInfo);
+                });
+            });
+
+            describe("additional", () => {
+                it("number", () => {
+                    const numberInfo = {
+                        number,
+                        numberBlocks: [4, 4, 4, 4, 3],
+                        numberGaps: [4, 8, 12, 16],
+                        numberLengths: [16, 19],
+                        numberMask: "#### #### #### #### ###",
+                        numberNice: formattedNumber,
+                        numberSource: number,
+                    };
+
+                    testValues(numberInfo);
+                });
+
+                it("colors", () => {
+                    const colorInfo = {
+                        backgroundColor: "#eeeeee",
+                        backgroundColors: ["#eeeeee", "#dddddd"],
+                        backgroundGradient:
+                            "linear-gradient(135deg, #eeeeee, #dddddd)",
+                        backgroundLightness: "light",
+                        textColor: "#000",
+                    };
+
+                    testValues(colorInfo);
+                });
+            });
+        }
+    );
 });

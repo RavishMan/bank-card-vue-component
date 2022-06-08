@@ -158,8 +158,14 @@ export default {
         onInput(event, type) {
             if (event.isTrusted) return;
             this.$emit(`input-${camelToKebab(type)}`, event.target.value);
+
+            const MAX_ALLOWED_SYMBOLS = 19;
+            const inputSymbolCount = event.target.value.replace(/\s/g, "").length;
+            const allowedBrands = ['mir', null];
+
             setTimeout(() => {
-                if (this.isFieldFull(type) && !this.reseting) {
+                if (!allowedBrands.includes(this.cardInfo.brandAlias) && this.isFieldFull(type) && !this.reseting
+                    || allowedBrands.includes(this.cardInfo.brandAlias) && inputSymbolCount === MAX_ALLOWED_SYMBOLS) {
                     this.moveCaretTo("forward", type);
                 }
             }, 0);

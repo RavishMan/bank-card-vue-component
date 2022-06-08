@@ -10,17 +10,25 @@ export const length = type =>
      * @returns { Boolean }
      */
     (value, vm) => {
+        const inputSymbolCount = value.replace(/\s/g, "").length;
         // Crutch of variables of card number length for maestro
-        if (
-            vm.cardInfo.brandAlias === "maestro" &&
-            value.replace(/\s/g, "").length >= 18
-        ) {
+        const isMaestroCard = vm.cardInfo.brandAlias === "maestro";
+        if (isMaestroCard && inputSymbolCount >= 18) {
             return true;
         }
-        return (
-            value.replace(/\s/g, "").length ===
-            vm[type].replace(/\s/g, "").length
-        );
+
+        const cardTypeMaskSymbolCount = vm[type].replace(/\s/g, "").length;
+        const allowedBanks = ['mir', null];
+        if (allowedBanks.includes(vm.cardInfo.brandAlias)) {
+            const defaultNumberMask = "#### #### #### ####";
+            const defaultMaskSymbolCount = defaultNumberMask.replace(/\s/g, "").length;
+
+            const allowedSymbolCount = [defaultMaskSymbolCount, cardTypeMaskSymbolCount];
+            if (allowedSymbolCount.includes(inputSymbolCount)) {
+                return true;
+            }
+        }
+        return inputSymbolCount === cardTypeMaskSymbolCount;
     };
 
 /**
