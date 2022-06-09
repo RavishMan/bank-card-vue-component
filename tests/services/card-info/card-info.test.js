@@ -15,7 +15,7 @@ describe("Card-info", () => {
             brandLogoPolicy: "colored",
             maskDigitSymbol: "0",
             maskDelimiterSymbol: ".",
-            gradientDegrees: 45
+            gradientDegrees: 45,
         };
         const cardInfo = new CardInfo("", options);
 
@@ -26,7 +26,7 @@ describe("Card-info", () => {
         const number = "5536911122223333";
         const cardInfo = new CardInfo(number);
 
-        const testValues = infoObject => {
+        const testValues = (infoObject) => {
             for (const [key, value] of Object.entries(infoObject)) {
                 const method = typeof value === "object" ? "toEqual" : "toBe";
 
@@ -43,7 +43,7 @@ describe("Card-info", () => {
                     bankLogoSm: "banks-logos/ru-tinkoff-sm.png",
                     bankLogoStyle: "white",
                     bankName: "Тинькофф Банк",
-                    bankNameEn: "Tinkoff Bank"
+                    bankNameEn: "Tinkoff Bank",
                 };
 
                 testValues(bankInfo);
@@ -53,7 +53,7 @@ describe("Card-info", () => {
                 const brandInfo = {
                     brandAlias: "master-card",
                     brandLogo: "brands-logos/master-card-white.svg",
-                    brandName: "MasterCard"
+                    brandName: "MasterCard",
                 };
 
                 testValues(brandInfo);
@@ -62,7 +62,7 @@ describe("Card-info", () => {
             it("code", () => {
                 const codeInfo = {
                     codeLength: 3,
-                    codeName: "CVC"
+                    codeName: "CVC",
                 };
 
                 testValues(codeInfo);
@@ -78,7 +78,7 @@ describe("Card-info", () => {
                     numberLengths: [16],
                     numberMask: "#### #### #### ####",
                     numberNice: "5536 9111 2222 3333",
-                    numberSource: number
+                    numberSource: number,
                 };
 
                 testValues(numberInfo);
@@ -119,89 +119,93 @@ describe("Card-info", () => {
             formattedNumber: "2200 0000 2222 2222",
             brand: "mir",
         },
-    ])("Check MIR card with number: {$number}",
-        ({ number, formattedNumber, brand }) => {
-            const cardInfo = new CardInfo(number);
+    ])("Check MIR card", ({ number, formattedNumber, brand }) => {
+        const cardInfo = new CardInfo(number);
 
-            const testValues = (infoObject) => {
-                for (const [key, value] of Object.entries(infoObject)) {
-                    const method =
-                        typeof value === "object" ? "toEqual" : "toBe";
+        const testValues = (infoObject) => {
+            for (const [key, value] of Object.entries(infoObject)) {
+                const method = typeof value === "object" ? "toEqual" : "toBe";
 
-                    expect(cardInfo[key])[method](value);
-                }
-            };
+                expect(cardInfo[key])[method](value);
+            }
+        };
 
-            describe("base", () => {
-                it("bank", () => {
-                    const bankInfo = {
-                        bankAlias: null,
-                        bankCountry: null,
-                        bankLogo: null,
-                        bankLogoSm: null,
-                        bankLogoStyle: null,
-                        bankName: null,
-                        bankNameEn: null,
-                    };
+        describe("Check base information", () => {
+            it("bank", () => {
+                const bankInfo = {
+                    bankAlias: null,
+                    bankCountry: null,
+                    bankLogo: null,
+                    bankLogoSm: null,
+                    bankLogoStyle: null,
+                    bankName: null,
+                    bankNameEn: null,
+                };
 
-                    testValues(bankInfo);
-                });
-
-                it("brand", () => {
-                    const brandInfo = {
-                        brandAlias: brand ? brand.toLowerCase() : null,
-                        brandName: brand ? brand.toUpperCase() : null,
-                    };
-
-                    testValues(brandInfo);
-                });
-
-                it("code", () => {
-                    const codeInfo = {
-                        codeLength: 3,
-                        codeName: "CVC",
-                    };
-
-                    testValues(codeInfo);
-                });
+                testValues(bankInfo);
             });
 
-            describe("additional", () => {
-                it("number", () => {
-                    const numberInfo = {
-                        number,
-                        numberBlocks: [4, 4, 4, 4, 3],
-                        numberGaps: [4, 8, 12, 16],
-                        numberLengths: [16, 19],
-                        numberMask: "#### #### #### #### ###",
-                        numberNice: formattedNumber,
-                        numberSource: number,
-                    };
+            it("CHeck card brand", () => {
+                const brandInfo = {
+                    brandAlias: brand ? brand.toLowerCase() : null,
+                    brandName: brand ? brand.toUpperCase() : null,
+                };
 
-                    testValues(numberInfo);
-                });
-
-                it("colors", () => {
-                    const colorInfo = {
-                        backgroundColor: "#eeeeee",
-                        backgroundColors: ["#eeeeee", "#dddddd"],
-                        backgroundGradient:
-                            "linear-gradient(135deg, #eeeeee, #dddddd)",
-                        backgroundLightness: "light",
-                        textColor: "#000",
-                    };
-
-                    testValues(colorInfo);
-                });
+                testValues(brandInfo);
             });
-        }
-    );
 
-    describe.each([ {
+            it("Check card code", () => {
+                const codeInfo = {
+                    codeLength: 3,
+                    codeName: "CVC",
+                };
+
+                testValues(codeInfo);
+            });
+        });
+
+        describe("Check card additional information", () => {
+            it(`Card number is: ${formattedNumber}`, () => {
+                const numberInfo = {
+                    number,
+                    numberBlocks: [4, 4, 4, 4, 3],
+                    numberGaps: [4, 8, 12, 16],
+                    numberLengths: [16, 19],
+                    numberMask: "#### #### #### #### ###",
+                    numberNice: formattedNumber,
+                    numberSource: number,
+                };
+
+                testValues(numberInfo);
+            });
+
+            it("colors", () => {
+                const colorInfo = {
+                    backgroundColor: "#eeeeee",
+                    backgroundColors: ["#eeeeee", "#dddddd"],
+                    backgroundGradient:
+                        "linear-gradient(135deg, #eeeeee, #dddddd)",
+                    backgroundLightness: "light",
+                    textColor: "#000",
+                };
+
+                testValues(colorInfo);
+            });
+        });
+    });
+
+    describe.each([
+        {
             number: "2100000000000000000",
             formattedNumber: "2100 0000 0000 0000 000",
             brand: null,
-        } ])(
+        },
+        {
+            number: "2100000000000000000",
+            formattedNumber: "2100 0000 0000 0000 000",
+            brand: null,
+        },
+    ])(
         "Check card with number: $number",
         ({ number, formattedNumber, brand }) => {
             const cardInfo = new CardInfo(number);
